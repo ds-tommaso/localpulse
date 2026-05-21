@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Pulse — Mercati di quartiere, digitali</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --glass-bg: rgba(255,255,255,0.18);
+    --glass-border: rgba(255,255,255,0.45);
+    --glass-shadow: 0 8px 32px rgba(31,38,135,0.10);
+    --glass-blur: blur(18px) saturate(180%);
+    --glass-bg-dark: rgba(255,255,255,0.08);
+    --accent-green: #2d6a4f;
+    --accent-warm: #e07b39;
+    --accent-light: #b7e4c7;
+    --text-primary: #1a1a18;
+    --text-secondary: #4a4a42;
+    --text-muted: #888876;
+    --bg-page: #f2ede4;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === BACKGROUND BLOBS === */
+  .bg-scene {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+  }
+  .blob {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.55;
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  .blob-1 { width: 520px; height: 520px; background: radial-gradient(circle, #a8d8b0 0%, #52b788 100%); top: -120px; left: -100px; animation-duration: 22s; }
+  .blob-2 { width: 400px; height: 400px; background: radial-gradient(circle, #f4c896 0%, #e07b39 100%); bottom: -80px; right: -60px; animation-duration: 17s; animation-delay: -5s; }
+  .blob-3 { width: 300px; height: 300px; background: radial-gradient(circle, #d8f3dc 0%, #95d5b2 100%); top: 45%; left: 60%; animation-duration: 25s; animation-delay: -10s; }
+  .blob-4 { width: 200px; height: 200px; background: radial-gradient(circle, #ffd6a5 0%, #f4a261 100%); top: 30%; left: 20%; animation-duration: 19s; animation-delay: -8s; }
+  @keyframes drift {
+    from { transform: translate(0,0) scale(1); }
+    to   { transform: translate(40px, 30px) scale(1.08); }
+  }
+
+  /* === GLASS MIXIN === */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  .glass-dark {
+    background: rgba(30, 50, 36, 0.22);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* === LAYOUT === */
+  .page { display: none; position: relative; z-index: 1; min-height: 100vh; }
+  .page.active { display: block; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* === NAV === */
+  nav {
+    position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+    z-index: 100; width: calc(100% - 48px); max-width: 1060px;
+    border-radius: 20px; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,255,255,0.28);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.55);
+    box-shadow: 0 4px 24px rgba(31,60,40,0.08), inset 0 1px 0 rgba(255,255,255,0.7);
+  }
+  .nav-logo {
+    font-family: var(--font-display); font-size: 22px; font-weight: 600;
+    color: var(--accent-green); text-decoration: none; letter-spacing: -0.3px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-logo span { color: var(--accent-warm); }
+  .logo-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent-warm); display: inline-block; margin-bottom: 1px; animation: pulse-dot 2.5s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%,100% { opacity:1; transform: scale(1); } 50% { opacity:0.6; transform: scale(1.4); } }
+  .nav-links { display: flex; gap: 6px; }
+  .nav-btn {
+    font-family: var(--font-body); font-size: 14px; font-weight: 400;
+    color: var(--text-secondary); background: none; border: none; cursor: pointer;
+    padding: 8px 16px; border-radius: 12px; transition: all 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: rgba(255,255,255,0.5); color: var(--accent-green); font-weight: 500;
+  }
+  .nav-btn-cta {
+    background: var(--accent-green); color: white; border-radius: 12px;
+    padding: 8px 18px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 2px 12px rgba(45,106,79,0.3);
+    transition: all 0.2s;
+  }
+  .nav-btn-cta:hover { background: #1f4f38; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(45,106,79,0.4); }
+
+  /* === HERO (HOME) === */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 120px 24px 80px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--accent-green); padding: 8px 18px; border-radius: 100px;
+    background: rgba(255,255,255,0.4); border: 1px solid rgba(45,106,79,0.25);
+    margin-bottom: 32px; backdrop-filter: blur(10px);
+  }
+  .hero-title {
+    font-family: var(--font-display); font-size: clamp(52px, 8vw, 96px);
+    font-weight: 300; line-height: 1.0; letter-spacing: -2px;
+    color: var(--text-primary); margin-bottom: 12px;
+  }
+  .hero-title em { font-style: italic; color: var(--accent-green); }
+  .hero-title .line2 { font-weight: 600; color: var(--accent-warm); }
+  .hero-sub {
+    font-family: var(--font-body); font-size: 18px; font-weight: 300;
+    color: var(--text-secondary); max-width: 560px; margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 16px 36px; border-radius: 16px; border: none; cursor: pointer;
+    font-family: var(--font-body); font-size: 16px; font-weight: 500;
+    background: var(--accent-green); color: white;
+    box-shadow: 0 4px 20px rgba(45,106,79,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: all 0.25s; text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(45,106,79,0.45); background: #1f4f38; }
+  .btn-ghost {
+    padding: 16px 36px; border-radius: 16px; cursor: pointer;
+    font-family: var(--font-body); font-size: 16px; font-weight: 400;
+    background: rgba(255,255,255,0.35); color: var(--text-primary);
+    border: 1px solid rgba(255,255,255,0.6); backdrop-filter: blur(10px);
+    transition: all 0.25s; text-decoration: none; display: inline-block;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.6); transform: translateY(-2px); }
+
+  /* === STATS === */
+  .stats-row {
+    display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+    margin-top: 80px;
+  }
+  .stat-card {
+    border-radius: 20px; padding: 28px 36px; text-align: center; min-width: 160px;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 20px rgba(31,60,40,0.06), inset 0 1px 0 rgba(255,255,255,0.65);
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-4px); }
+  .stat-num { font-family: var(--font-display); font-size: 42px; font-weight: 600; color: var(--accent-green); line-height: 1; }
+  .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; font-weight: 300; }
+
+  /* === FEATURES SECTION === */
+  .section { padding: 100px 0; }
+  .section-label {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent-warm); font-weight: 500; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: var(--font-display); font-size: clamp(36px, 5vw, 60px);
+    font-weight: 300; line-height: 1.1; margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+  .section-title strong { font-weight: 600; }
+  .section-lead { font-size: 17px; color: var(--text-secondary); max-width: 520px; line-height: 1.7; font-weight: 300; }
+
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 56px; }
+  .feature-card {
+    border-radius: 24px; padding: 36px 32px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 24px rgba(31,60,40,0.06), inset 0 1px 0 rgba(255,255,255,0.7);
+    transition: all 0.3s;
+  }
+  .feature-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(31,60,40,0.12), inset 0 1px 0 rgba(255,255,255,0.7); }
+  .feature-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin-bottom: 24px;
+    background: rgba(45,106,79,0.12); border: 1px solid rgba(45,106,79,0.2);
+  }
+  .feature-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; margin-bottom: 10px; color: var(--text-primary); }
+  .feature-body { font-size: 15px; color: var(--text-secondary); line-height: 1.65; font-weight: 300; }
+
+  /* === PAGE HEADER === */
+  .page-header {
+    padding: 140px 0 60px; text-align: center;
+  }
+  .page-header h1 {
+    font-family: var(--font-display); font-size: clamp(44px, 6vw, 72px);
+    font-weight: 300; color: var(--text-primary); line-height: 1.05;
+    letter-spacing: -1.5px;
+  }
+  .page-header h1 strong { font-weight: 600; }
+  .page-header p { font-size: 17px; color: var(--text-secondary); margin-top: 14px; font-weight: 300; }
+
+  /* === ESPLORA PAGE === */
+  .search-bar-wrap {
+    max-width: 640px; margin: 0 auto 48px;
+    display: flex; gap: 12px;
+  }
+  .search-input {
+    flex: 1; padding: 16px 22px; border-radius: 16px; font-size: 15px;
+    background: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.6);
+    backdrop-filter: blur(14px); color: var(--text-primary);
+    font-family: var(--font-body); outline: none; transition: all 0.2s;
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-input:focus { background: rgba(255,255,255,0.55); border-color: rgba(45,106,79,0.4); box-shadow: 0 0 0 3px rgba(45,106,79,0.1); }
+  .search-btn {
+    padding: 16px 24px; border-radius: 16px; border: none; cursor: pointer;
+    background: var(--accent-green); color: white; font-size: 15px;
+    font-family: var(--font-body); font-weight: 500;
+    box-shadow: 0 4px 16px rgba(45,106,79,0.3); transition: all 0.2s;
+  }
+  .search-btn:hover { background: #1f4f38; transform: translateY(-1px); }
+
+  .filter-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+  .filter-chip {
+    padding: 8px 18px; border-radius: 100px; font-size: 13px; font-weight: 400;
+    background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.5);
+    color: var(--text-secondary); cursor: pointer; backdrop-filter: blur(10px);
+    transition: all 0.2s;
+  }
+  .filter-chip:hover, .filter-chip.active {
+    background: var(--accent-green); color: white; border-color: transparent;
+    box-shadow: 0 2px 12px rgba(45,106,79,0.3);
+  }
+
+  .market-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+  .market-card {
+    border-radius: 24px; overflow: hidden;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 24px rgba(31,60,40,0.06);
+    transition: all 0.3s; cursor: pointer;
+  }
+  .market-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(31,60,40,0.14); }
+  .market-thumb {
+    height: 160px; display: flex; align-items: center; justify-content: center;
+    font-size: 52px; position: relative;
+  }
+  .market-thumb-bg { position: absolute; inset: 0; opacity: 0.3; }
+  .market-body { padding: 22px 24px 24px; }
+  .market-name { font-family: var(--font-display); font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .market-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+  .market-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tag {
+    font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 100px;
+    background: rgba(45,106,79,0.12); color: var(--accent-green);
+    border: 1px solid rgba(45,106,79,0.2);
+  }
+  .tag.warm { background: rgba(224,123,57,0.12); color: var(--accent-warm); border-color: rgba(224,123,57,0.2); }
+  .market-footer { display: flex; align-items: center; justify-content: space-between; }
+  .market-price { font-size: 13px; color: var(--text-secondary); }
+  .market-price strong { color: var(--accent-green); font-weight: 600; }
+  .btn-sm {
+    padding: 8px 18px; border-radius: 12px; border: none; cursor: pointer;
+    font-family: var(--font-body); font-size: 13px; font-weight: 500;
+    background: var(--accent-green); color: white;
+    transition: all 0.2s;
+  }
+  .btn-sm:hover { background: #1f4f38; }
+
+  /* === LOGIN / ACCOUNT PAGE === */
+  .auth-wrap {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 100px 24px;
+  }
+  .auth-card {
+    width: 100%; max-width: 440px; border-radius: 28px; padding: 48px 44px;
+    background: rgba(255,255,255,0.28);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 8px 40px rgba(31,60,40,0.1), inset 0 1px 0 rgba(255,255,255,0.8);
+  }
+  .auth-logo { text-align: center; margin-bottom: 32px; }
+  .auth-logo span { font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--accent-green); }
+  .auth-logo small { display: block; font-size: 14px; color: var(--text-muted); font-weight: 300; margin-top: 4px; }
+  .auth-title { font-family: var(--font-display); font-size: 30px; font-weight: 600; text-align: center; margin-bottom: 8px; }
+  .auth-sub { font-size: 14px; color: var(--text-muted); text-align: center; margin-bottom: 32px; font-weight: 300; }
+  .form-group { margin-bottom: 18px; }
+  label.field-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 7px; }
+  .field-input {
+    width: 100%; padding: 14px 16px; border-radius: 14px; font-size: 15px;
+    background: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.7);
+    color: var(--text-primary); font-family: var(--font-body); outline: none;
+    transition: all 0.2s; backdrop-filter: blur(8px);
+  }
+  .field-input:focus { background: rgba(255,255,255,0.65); border-color: rgba(45,106,79,0.45); box-shadow: 0 0 0 3px rgba(45,106,79,0.1); }
+  .field-input::placeholder { color: var(--text-muted); }
+  .btn-block {
+    width: 100%; padding: 16px; border-radius: 14px; border: none; cursor: pointer;
+    font-family: var(--font-body); font-size: 16px; font-weight: 500;
+    background: var(--accent-green); color: white;
+    box-shadow: 0 4px 20px rgba(45,106,79,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: all 0.25s; margin-top: 8px;
+  }
+  .btn-block:hover { background: #1f4f38; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(45,106,79,0.45); }
+  .auth-divider { text-align: center; font-size: 13px; color: var(--text-muted); margin: 20px 0; position: relative; }
+  .auth-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.1); }
+  .auth-divider span { background: transparent; padding: 0 12px; position: relative; backdrop-filter: none; }
+  .auth-link { text-align: center; font-size: 14px; color: var(--text-muted); margin-top: 20px; }
+  .auth-link a { color: var(--accent-green); font-weight: 500; text-decoration: none; cursor: pointer; }
+  .auth-link a:hover { text-decoration: underline; }
+  .social-btn {
+    width: 100%; padding: 13px 16px; border-radius: 14px; cursor: pointer;
+    font-family: var(--font-body); font-size: 14px; font-weight: 400;
+    background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.7);
+    color: var(--text-primary); transition: all 0.2s; margin-bottom: 10px;
+    backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .social-btn:hover { background: rgba(255,255,255,0.75); }
+
+  /* === ACCOUNT PAGE === */
+  .account-layout { display: grid; grid-template-columns: 280px 1fr; gap: 28px; padding-top: 24px; }
+  .account-sidebar {
+    border-radius: 24px; padding: 28px; height: fit-content; position: sticky; top: 100px;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 24px rgba(31,60,40,0.06), inset 0 1px 0 rgba(255,255,255,0.65);
+  }
+  .account-avatar {
+    width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 16px;
+    background: linear-gradient(135deg, #b7e4c7, #52b788);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 30px; font-weight: 600; color: white;
+    border: 3px solid rgba(255,255,255,0.7);
+    box-shadow: 0 4px 16px rgba(45,106,79,0.25);
+  }
+  .account-name { text-align: center; font-family: var(--font-display); font-size: 22px; font-weight: 600; }
+  .account-role { text-align: center; font-size: 13px; color: var(--accent-warm); font-weight: 500; margin-top: 4px; margin-bottom: 24px; }
+  .sidebar-nav { list-style: none; }
+  .sidebar-nav li { margin-bottom: 4px; }
+  .sidebar-nav a {
+    display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+    border-radius: 12px; text-decoration: none; font-size: 14px;
+    color: var(--text-secondary); transition: all 0.2s; cursor: pointer;
+  }
+  .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(45,106,79,0.1); color: var(--accent-green); font-weight: 500; }
+  .sidebar-nav .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .account-main {}
+  .account-card {
+    border-radius: 24px; padding: 32px 36px; margin-bottom: 20px;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 24px rgba(31,60,40,0.06), inset 0 1px 0 rgba(255,255,255,0.65);
+  }
+  .account-card-title {
+    font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-bottom: 20px;
+    color: var(--text-primary); padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+  }
+  .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .badge-green {
+    display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+    background: rgba(45,106,79,0.12); border: 1px solid rgba(45,106,79,0.2);
+    color: var(--accent-green); border-radius: 100px; font-size: 12px; font-weight: 500;
+  }
+  .badge-warm {
+    display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+    background: rgba(224,123,57,0.12); border: 1px solid rgba(224,123,57,0.2);
+    color: var(--accent-warm); border-radius: 100px; font-size: 12px; font-weight: 500;
+  }
+  .order-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .order-row:last-child { border-bottom: none; }
+  .order-name { font-size: 15px; font-weight: 400; }
+  .order-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .order-price { font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--accent-green); }
+  .waste-bar-bg {
+    height: 10px; border-radius: 100px;
+    background: rgba(0,0,0,0.07); overflow: hidden; margin-top: 8px;
+  }
+  .waste-bar-fill {
+    height: 100%; border-radius: 100px;
+    background: linear-gradient(90deg, #52b788, #2d6a4f);
+    transition: width 1.2s cubic-bezier(.22,1,.36,1);
+  }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+
+  /* === CONTATTI PAGE === */
+  .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .contact-info-card {
+    border-radius: 24px; padding: 40px;
+    background: rgba(45,106,79,0.15);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(45,106,79,0.25);
+    box-shadow: 0 4px 24px rgba(31,60,40,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .contact-info-title { font-family: var(--font-display); font-size: 36px; font-weight: 300; color: var(--text-primary); margin-bottom: 8px; }
+  .contact-info-title strong { font-weight: 600; color: var(--accent-green); }
+  .contact-info-text { font-size: 15px; color: var(--text-secondary); line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
+  .contact-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+  .contact-icon {
+    width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+    background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.6);
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .contact-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 500; margin-bottom: 2px; }
+  .contact-value { font-size: 15px; color: var(--text-primary); }
+  .contact-form-card {
+    border-radius: 24px; padding: 40px;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 24px rgba(31,60,40,0.06), inset 0 1px 0 rgba(255,255,255,0.65);
+  }
+  .contact-form-title { font-family: var(--font-display); font-size: 26px; font-weight: 600; margin-bottom: 24px; }
+  textarea.field-input { resize: vertical; min-height: 120px; }
+  .select-input {
+    width: 100%; padding: 14px 16px; border-radius: 14px; font-size: 15px;
+    background: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.7);
+    color: var(--text-primary); font-family: var(--font-body); outline: none;
+    appearance: none; cursor: pointer; transition: all 0.2s;
+  }
+  .select-input:focus { background: rgba(255,255,255,0.65); border-color: rgba(45,106,79,0.45); }
+
+  /* === FOOTER === */
+  footer {
+    padding: 60px 0 40px; margin-top: 60px; position: relative; z-index: 1;
+    border-top: 1px solid rgba(255,255,255,0.4);
+  }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--accent-green); }
+  .footer-brand span { color: var(--accent-warm); }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; cursor: pointer; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent-green); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 32px; }
+
+  /* === RIPPLE / TOAST === */
+  .toast {
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--accent-green); color: white;
+    padding: 14px 28px; border-radius: 100px; font-size: 14px; font-weight: 500;
+    opacity: 0; transition: all 0.35s; z-index: 999; pointer-events: none;
+    box-shadow: 0 4px 20px rgba(45,106,79,0.4);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* === ANIMATIONS === */
+  @keyframes fadeUp { from { opacity:0; transform: translateY(28px); } to { opacity:1; transform: translateY(0); } }
+  .fadein { animation: fadeUp 0.55s ease both; }
+  .fadein-2 { animation: fadeUp 0.55s 0.1s ease both; }
+  .fadein-3 { animation: fadeUp 0.55s 0.2s ease both; }
+  .fadein-4 { animation: fadeUp 0.55s 0.3s ease both; }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .account-layout { grid-template-columns: 1fr; }
+    .contact-layout { grid-template-columns: 1fr; }
+    .fields-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-title { font-size: 48px; }
+    .stats-row { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="bg-scene" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" onclick="showPage('home')">
+    <span class="logo-dot"></span>Local<span>Pulse</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-btn" onclick="showPage('esplora')">Esplora</a>
+    <a class="nav-btn" onclick="showPage('contatti')">Contatti</a>
+    <a class="nav-btn" onclick="showPage('account')">Account</a>
+    <a class="nav-btn nav-btn-cta" onclick="showPage('login')">Accedi</a>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- =================== HOME PAGE =================== -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-badge fadein">🌿 Sostenibilità · Tradizione · Digitale</div>
+    <h1 class="hero-title fadein-2">
+      Il <em>mercato</em> di quartiere<br>
+      <span class="line2">nel tuo palmo</span>
+    </h1>
+    <p class="hero-sub fadein-3">Connetti i mercati rionali italiani con la comunità locale. Zero sprechi, prodotti freschi, venditori reali — a portata di tap.</p>
+    <div class="hero-actions fadein-4">
+      <a class="btn-primary" onclick="showPage('esplora')">Esplora i mercati →</a>
+      <a class="btn-ghost" onclick="showPage('login')">Per i venditori</a>
+    </div>
+
+    <div class="stats-row fadein-4">
+      <div class="stat-card">
+        <div class="stat-num">340+</div>
+        <div class="stat-label">Mercati attivi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">12k</div>
+        <div class="stat-label">Venditori registrati</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">-38%</div>
+        <div class="stat-label">Spreco alimentare</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">94%</div>
+        <div class="stat-label">Prodotti km zero</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">Come funziona</div>
+      <h2 class="section-title">Tecnologia al servizio<br><strong>della tradizione</strong></h2>
+      <p class="section-lead">Local Pulse digitalizza i mercati rionali senza snaturarli. Più visibilità ai venditori, più convenienza per i clienti, meno sprechi per tutti.</p>
+
+      <div class="features-grid">
+        <div class="feature-card fadein">
+          <div class="feature-icon">🗺️</div>
+          <div class="feature-title">Mappa in tempo reale</div>
+          <div class="feature-body">Scopri i mercati attivi vicino a te, gli orari aggiornati e le disponibilità dei banchi. Nessuna sorpresa all'arrivo.</div>
+        </div>
+        <div class="feature-card fadein-2">
+          <div class="feature-icon">♻️</div>
+          <div class="feature-title">Anti-spreco intelligente</div>
+          <div class="feature-body">Ricevi notifiche quando i venditori mettono in offerta i prodotti di fine giornata. Risparmia e aiuti il pianeta.</div>
+        </div>
+        <div class="feature-card fadein-3">
+          <div class="feature-icon">🧑‍🌾</div>
+          <div class="feature-title">Profili dei produttori</div>
+          <div class="feature-body">Conosci chi coltiva il tuo cibo: storia, metodi, certificazioni. La filiera trasparente inizia con una conversazione.</div>
+        </div>
+        <div class="feature-card fadein">
+          <div class="feature-icon">📦</div>
+          <div class="feature-title">Pre-ordini e ritiro</div>
+          <div class="feature-body">Prenota la cassetta settimanale, scegli il giorno di ritiro. Zero code, zero sprechi, massima freschezza.</div>
+        </div>
+        <div class="feature-card fadein-2">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Dashboard per venditori</div>
+          <div class="feature-body">Analisi vendite, gestione scorte, promozioni mirate. Tutto ciò che serve per competere nell'era digitale.</div>
+        </div>
+        <div class="feature-card fadein-3">
+          <div class="feature-icon">🌱</div>
+          <div class="feature-title">Impatto misurabile</div>
+          <div class="feature-body">Tieni traccia dei chili salvati dallo spreco, delle emissioni evitate, del denaro reinvestito nella comunità locale.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA STRIP -->
+  <div class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="glass" style="border-radius: 28px; padding: 52px 60px; text-align:center; background: rgba(45,106,79,0.1);">
+        <p class="section-label" style="margin-bottom: 16px;">Sei un venditore?</p>
+        <h2 class="section-title" style="margin-bottom: 16px; font-size: 40px;">Porta il tuo banco<br><strong>online in 5 minuti</strong></h2>
+        <p style="font-size: 16px; color: var(--text-secondary); max-width: 460px; margin: 0 auto 32px; font-weight: 300;">Nessuna competenza tecnica richiesta. Solo la tua passione per i prodotti buoni e un telefono.</p>
+        <a class="btn-primary" onclick="showPage('login')">Registra il tuo banco →</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand">Local<span>Pulse</span></div>
+          <div class="footer-tagline">Mercati di quartiere, digitalizzati con cura</div>
+        </div>
+        <div class="footer-links">
+          <a onclick="showPage('esplora')">Esplora</a>
+          <a onclick="showPage('contatti')">Contatti</a>
+          <a onclick="showPage('login')">Accedi</a>
+          <a>Privacy</a>
+        </div>
+      </div>
+      <div class="footer-copy">© 2025 Local Pulse — progetto per la valorizzazione dei mercati rionali italiani</div>
+    </div>
+  </footer>
+</div>
+
+<!-- =================== ESPLORA PAGE =================== -->
+<div class="page" id="page-esplora">
+  <div style="padding-top: 100px; padding-bottom: 80px;">
+    <div class="container">
+      <div class="page-header" style="padding-top: 40px;">
+        <div class="section-label">Scopri</div>
+        <h1><strong>Esplora</strong> i mercati</h1>
+        <p>Freschezza, tradizione e sapori locali — vicino a te</p>
+      </div>
+
+      <div class="search-bar-wrap fadein">
+        <input class="search-input" type="text" placeholder="🔍  Cerca per prodotto, quartiere, mercato…">
+        <button class="search-btn">Cerca</button>
+      </div>
+
+      <div class="filter-row fadein-2">
+        <div class="filter-chip active" onclick="toggleFilter(this)">Tutti</div>
+        <div class="filter-chip" onclick="toggleFilter(this)">🥦 Ortofrutta</div>
+        <div class="filter-chip" onclick="toggleFilter(this)">🧀 Formaggi & Latticini</div>
+        <div class="filter-chip" onclick="toggleFilter(this)">🥩 Macelleria</div>
+        <div class="filter-chip" onclick="toggleFilter(this)">🍞 Panetteria</div>
+        <div class="filter-chip" onclick="toggleFilter(this)">🫒 Olio & Conserve</div>
+        <div class="filter-chip" onclick="toggleFilter(this)">♻️ Anti-spreco</div>
+      </div>
+
+      <div class="market-grid">
+        <div class="market-card fadein" onclick="showToast('Apertura scheda mercato in arrivo!')">
+          <div class="market-thumb" style="background: linear-gradient(135deg, #d8f3dc, #b7e4c7);">
+            <span style="position:relative;z-index:1">🥬</span>
+          </div>
+          <div class="market-body">
+            <div class="market-name">Mercato Trionfale</div>
+            <div class="market-meta">📍 Via Andrea Doria, Roma · Lun–Sab 6:00–14:00</div>
+            <div class="market-tags">
+              <span class="tag">Ortofrutta</span>
+              <span class="tag">Km zero</span>
+              <span class="tag warm">♻️ Anti-spreco</span>
+            </div>
+            <div class="market-footer">
+              <div class="market-price">da <strong>€0.80/kg</strong></div>
+              <button class="btn-sm">Esplora</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="market-card fadein-2" onclick="showToast('Apertura scheda mercato in arrivo!')">
+          <div class="market-thumb" style="background: linear-gradient(135deg, #fae0c8, #f4c896);">
+            <span style="position:relative;z-index:1">🧀</span>
+          </div>
+          <div class="market-body">
+            <div class="market-name">Porta Palazzo</div>
+            <div class="market-meta">📍 Piazza della Repubblica, Torino · Lun–Ven 7:30–13:30</div>
+            <div class="market-tags">
+              <span class="tag">Formaggi</span>
+              <span class="tag">Latticini</span>
+              <span class="tag">Gastronomia</span>
+            </div>
+            <div class="market-footer">
+              <div class="market-price">da <strong>€3.50/100g</strong></div>
+              <button class="btn-sm">Esplora</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="market-card fadein-3" onclick="showToast('Apertura scheda mercato in arrivo!')">
+          <div class="market-thumb" style="background: linear-gradient(135deg, #e8d5f5, #c9a7e6);">
+            <span style="position:relative;z-index:1">🍊</span>
+          </div>
+          <div class="market-body">
+            <div class="market-name">Mercato Ballarò</div>
+            <div class="market-meta">📍 Albergheria, Palermo · Mar–Dom 6:30–13:00</div>
+            <div class="market-tags">
+              <span class="tag">Agrumi</span>
+              <span class="tag">Pesce fresco</span>
+              <span class="tag warm">♻️ Anti-spreco</span>
+            </div>
+            <div class="market-footer">
+              <div class="market-price">da <strong>€0.60/kg</strong></div>
+              <button class="btn-sm">Esplora</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="market-card fadein" onclick="showToast('Apertura scheda mercato in arrivo!')">
+          <div class="market-thumb" style="background: linear-gradient(135deg, #fff0d4, #fad59a);">
+            <span style="position:relative;z-index:1">🍞</span>
+          </div>
+          <div class="market-body">
+            <div class="market-name">Forno del Popolo</div>
+            <div class="market-meta">📍 Navigli, Milano · Mer–Dom 7:00–13:00</div>
+            <div class="market-tags">
+              <span class="tag">Pane</span>
+              <span class="tag">Pasta fresca</span>
+              <span class="tag">Dolci artigianali</span>
+            </div>
+            <div class="market-footer">
+              <div class="market-price">da <strong>€2.00/pz</strong></div>
+              <button class="btn-sm">Esplora</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="market-card fadein-2" onclick="showToast('Apertura scheda mercato in arrivo!')">
+          <div class="market-thumb" style="background: linear-gradient(135deg, #d4ede0, #8cd4b0);">
+            <span style="position:relative;z-index:1">🫒</span>
+          </div>
+          <div class="market-body">
+            <div class="market-name">L'Oliveto di San Miniato</div>
+            <div class="market-meta">📍 Mercato Centrale, Firenze · Lun–Sab 7:00–14:30</div>
+            <div class="market-tags">
+              <span class="tag">Olio EVO</span>
+              <span class="tag">Tartufo</span>
+              <span class="tag">Conserve</span>
+            </div>
+            <div class="market-footer">
+              <div class="market-price">da <strong>€8.00/250ml</strong></div>
+              <button class="btn-sm">Esplora</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="market-card fadein-3" onclick="showToast('Apertura scheda mercato in arrivo!')">
+          <div class="market-thumb" style="background: linear-gradient(135deg, #fce4e4, #f4a9a9);">
+            <span style="position:relative;z-index:1">🥩</span>
+          </div>
+          <div class="market-body">
+            <div class="market-name">La Macelleria Vecia</div>
+            <div class="market-meta">📍 Rialto, Venezia · Mar–Sab 7:30–12:30</div>
+            <div class="market-tags">
+              <span class="tag">Carne biologica</span>
+              <span class="tag">Km zero</span>
+              <span class="tag warm">♻️ Anti-spreco</span>
+            </div>
+            <div class="market-footer">
+              <div class="market-price">da <strong>€14.00/kg</strong></div>
+              <button class="btn-sm">Esplora</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand">Local<span>Pulse</span></div>
+          <div class="footer-tagline">Mercati di quartiere, digitalizzati con cura</div>
+        </div>
+        <div class="footer-links">
+          <a onclick="showPage('home')">Home</a>
+          <a onclick="showPage('contatti')">Contatti</a>
+          <a onclick="showPage('login')">Accedi</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- =================== LOGIN PAGE =================== -->
+<div class="page" id="page-login">
+  <div class="auth-wrap">
+    <div class="auth-card fadein">
+      <div class="auth-logo">
+        <span>Local<span style="color: var(--accent-warm)">Pulse</span></span>
+        <small>Mercati rionali digitali</small>
+      </div>
+      <h1 class="auth-title">Bentornato/a</h1>
+      <p class="auth-sub">Accedi per scoprire i mercati vicino a te</p>
+
+      <button class="social-btn" onclick="showToast('Accesso con Google — presto disponibile!')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continua con Google
+      </button>
+
+      <div class="auth-divider"><span>oppure con email</span></div>
+
+      <div class="form-group">
+        <label class="field-label">Email</label>
+        <input class="field-input" type="email" placeholder="nome@esempio.it">
+      </div>
+      <div class="form-group">
+        <label class="field-label">Password</label>
+        <input class="field-input" type="password" placeholder="••••••••">
+      </div>
+
+      <button class="btn-block" onclick="doLogin()">Accedi</button>
+
+      <div class="auth-link" style="margin-top: 16px;">
+        <a onclick="showToast('Recupero password inviato!')">Password dimenticata?</a>
+      </div>
+      <div class="auth-link">
+        Non hai un account? <a onclick="showPage('register')">Registrati gratis</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== REGISTER PAGE =================== -->
+<div class="page" id="page-register">
+  <div class="auth-wrap">
+    <div class="auth-card fadein">
+      <div class="auth-logo">
+        <span>Local<span style="color: var(--accent-warm)">Pulse</span></span>
+        <small>Unisciti alla comunità</small>
+      </div>
+      <h1 class="auth-title">Crea il tuo account</h1>
+      <p class="auth-sub">Scegli come vuoi usare Local Pulse</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+        <button class="social-btn" id="type-buyer" style="background: rgba(45,106,79,0.12); border-color: rgba(45,106,79,0.35); color: var(--accent-green); font-weight: 500; flex-direction: column; gap: 4px; padding: 16px;" onclick="selectType('buyer')">
+          🛍️<span style="font-size: 13px;">Acquirente</span>
+        </button>
+        <button class="social-btn" id="type-seller" style="flex-direction: column; gap: 4px; padding: 16px;" onclick="selectType('seller')">
+          🧑‍🌾<span style="font-size: 13px;">Venditore</span>
+        </button>
+      </div>
+
+      <div class="fields-grid" style="margin-bottom: 18px;">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="field-label">Nome</label>
+          <input class="field-input" type="text" placeholder="Marco">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="field-label">Cognome</label>
+          <input class="field-input" type="text" placeholder="Rossi">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="field-label">Email</label>
+        <input class="field-input" type="email" placeholder="nome@esempio.it">
+      </div>
+      <div class="form-group">
+        <label class="field-label">Password</label>
+        <input class="field-input" type="password" placeholder="Almeno 8 caratteri">
+      </div>
+
+      <button class="btn-block" onclick="showToast('Registrazione completata! Benvenuto su Local Pulse 🌿')">Crea account</button>
+
+      <div class="auth-link">
+        Hai già un account? <a onclick="showPage('login')">Accedi</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== ACCOUNT PAGE =================== -->
+<div class="page" id="page-account">
+  <div style="padding-top: 100px; padding-bottom: 80px;">
+    <div class="container">
+      <div class="account-layout">
+        <!-- SIDEBAR -->
+        <div class="account-sidebar fadein">
+          <div class="account-avatar">MR</div>
+          <div class="account-name">Marco Rossi</div>
+          <div class="account-role">Acquirente · Roma</div>
+          <ul class="sidebar-nav">
+            <li><a class="active"><span class="nav-icon">👤</span> Profilo</a></li>
+            <li><a onclick="showToast('Sezione ordini in costruzione')"><span class="nav-icon">📦</span> I miei ordini</a></li>
+            <li><a onclick="showToast('Sezione preferiti in costruzione')"><span class="nav-icon">❤️</span> Preferiti</a></li>
+            <li><a onclick="showToast('Sezione impatto in costruzione')"><span class="nav-icon">🌱</span> Il mio impatto</a></li>
+            <li><a onclick="showToast('Sezione notifiche in costruzione')"><span class="nav-icon">🔔</span> Notifiche</a></li>
+            <li><a onclick="showToast('Sezione impostazioni in costruzione')"><span class="nav-icon">⚙️</span> Impostazioni</a></li>
+            <li style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.07);">
+              <a onclick="showPage('login')" style="color: #c0392b;"><span class="nav-icon">↩️</span> Esci</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- MAIN -->
+        <div class="account-main">
+          <!-- PROFILO -->
+          <div class="account-card fadein">
+            <div class="account-card-title">Dati personali</div>
+            <div class="fields-grid" style="margin-bottom: 16px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="field-label">Nome</label>
+                <input class="field-input" type="text" value="Marco">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="field-label">Cognome</label>
+                <input class="field-input" type="text" value="Rossi">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="field-label">Email</label>
+                <input class="field-input" type="email" value="marco.rossi@email.it">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="field-label">Città</label>
+                <input class="field-input" type="text" value="Roma, Trastevere">
+              </div>
+            </div>
+            <button class="btn-sm" onclick="showToast('Profilo aggiornato ✓')">Salva modifiche</button>
+          </div>
+
+          <!-- ORDINI RECENTI -->
+          <div class="account-card fadein-2">
+            <div class="account-card-title">Ordini recenti</div>
+            <div class="order-row">
+              <div>
+                <div class="order-name">Cassetta verdure miste · Mercato Trionfale</div>
+                <div class="order-meta">18 maggio 2025 · Ritiro confermato</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="order-price">€8.50</div>
+                <span class="badge-green">✓ Ritirato</span>
+              </div>
+            </div>
+            <div class="order-row">
+              <div>
+                <div class="order-name">Olio EVO 500ml · L'Oliveto di San Miniato</div>
+                <div class="order-meta">14 maggio 2025 · Spedito</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="order-price">€12.00</div>
+                <span class="badge-warm">🚚 In viaggio</span>
+              </div>
+            </div>
+            <div class="order-row">
+              <div>
+                <div class="order-name">Pane di Altamura 1kg · Forno del Popolo</div>
+                <div class="order-meta">10 maggio 2025 · Completato</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="order-price">€5.20</div>
+                <span class="badge-green">✓ Ritirato</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- IMPATTO AMBIENTALE -->
+          <div class="account-card fadein-3">
+            <div class="account-card-title">🌱 Il tuo impatto ambientale</div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+              <div style="text-align: center; padding: 20px 12px; border-radius: 16px; background: rgba(45,106,79,0.08); border: 1px solid rgba(45,106,79,0.15);">
+                <div style="font-family: var(--font-display); font-size: 32px; font-weight: 600; color: var(--accent-green);">4.2</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">kg spreco salvato</div>
+              </div>
+              <div style="text-align: center; padding: 20px 12px; border-radius: 16px; background: rgba(224,123,57,0.08); border: 1px solid rgba(224,123,57,0.15);">
+                <div style="font-family: var(--font-display); font-size: 32px; font-weight: 600; color: var(--accent-warm);">3.1</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">kg CO₂ evitata</div>
+              </div>
+              <div style="text-align: center; padding: 20px 12px; border-radius: 16px; background: rgba(45,106,79,0.08); border: 1px solid rgba(45,106,79,0.15);">
+                <div style="font-family: var(--font-display); font-size: 32px; font-weight: 600; color: var(--accent-green);">18</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">acquisti locali</div>
+              </div>
+            </div>
+            <div>
+              <div class="progress-label"><span>Obiettivo mensile: 10kg salvati</span><span>4.2 / 10 kg</span></div>
+              <div class="waste-bar-bg"><div class="waste-bar-fill" style="width: 42%"></div></div>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 12px; font-style: italic;">Continua così! Se arrivi a 10kg questo mese ricevi il badge "Zero Waste Hero" 🏅</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== CONTATTI PAGE =================== -->
+<div class="page" id="page-contatti">
+  <div style="padding-top: 100px; padding-bottom: 80px;">
+    <div class="container">
+      <div class="page-header" style="padding-top: 40px;">
+        <div class="section-label">Parliamoci</div>
+        <h1>Scrivici, <strong>ci fa piacere</strong></h1>
+        <p>Team, partnership, supporto tecnico o solo curiosità — siamo qui</p>
+      </div>
+
+      <div class="contact-layout fadein">
+        <!-- INFO CARD -->
+        <div class="contact-info-card">
+          <h2 class="contact-info-title">Una piattaforma<br><strong>fatta di persone</strong></h2>
+          <p class="contact-info-text">Local Pulse nasce dall'amore per i mercati italiani e dalla convinzione che la tecnologia debba servire la tradizione, non sostituirla. Siamo un team piccolo ma appassionato.</p>
+
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">ciao@localpulse.it</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-label">Sede</div>
+              <div class="contact-value">Via dei Mercanti 12, Roma</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">⏰</div>
+            <div>
+              <div class="contact-label">Supporto</div>
+              <div class="contact-value">Lun–Ven, 9:00–18:00</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🤝</div>
+            <div>
+              <div class="contact-label">Partnership</div>
+              <div class="contact-value">partner@localpulse.it</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.3);">
+            <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; font-weight: 500;">Seguici</div>
+            <div style="display: flex; gap: 10px;">
+              <button class="filter-chip" style="margin: 0;" onclick="showToast('Instagram: @localpulse_it')">Instagram</button>
+              <button class="filter-chip" style="margin: 0;" onclick="showToast('LinkedIn: Local Pulse')">LinkedIn</button>
+              <button class="filter-chip" style="margin: 0;" onclick="showToast('Twitter: @localpulse')">Twitter/X</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM CARD -->
+        <div class="contact-form-card fadein-2">
+          <div class="contact-form-title">Mandaci un messaggio</div>
+
+          <div class="fields-grid" style="margin-bottom: 16px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="field-label">Nome</label>
+              <input class="field-input" type="text" placeholder="Il tuo nome">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="field-label">Cognome</label>
+              <input class="field-input" type="text" placeholder="Il tuo cognome">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label">Email</label>
+            <input class="field-input" type="email" placeholder="nome@esempio.it">
+          </div>
+
+          <div class="form-group">
+            <label class="field-label">Argomento</label>
+            <select class="select-input">
+              <option>Seleziona un argomento…</option>
+              <option>Informazioni generali</option>
+              <option>Registrazione venditore</option>
+              <option>Supporto tecnico</option>
+              <option>Partnership & collaborazioni</option>
+              <option>Segnala un problema</option>
+              <option>Proposta media / stampa</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label">Messaggio</label>
+            <textarea class="field-input" placeholder="Scrivi qui il tuo messaggio…"></textarea>
+          </div>
+
+          <button class="btn-block" onclick="showToast('Messaggio inviato! Ti risponderemo entro 24 ore 💚')">Invia messaggio</button>
+
+          <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 16px; font-weight: 300;">Rispondiamo a tutti i messaggi entro 24 ore lavorative.</p>
+        </div>
+      </div>
+
+      <!-- FAQ ROW -->
+      <div style="margin-top: 72px;">
+        <div style="text-align: center; margin-bottom: 40px;">
+          <div class="section-label">Domande frequenti</div>
+          <h2 class="section-title" style="font-size: 36px;">Risposte <strong>rapide</strong></h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+          <div class="feature-card fadein">
+            <div class="feature-title" style="font-size: 17px;">È gratuito per gli acquirenti?</div>
+            <div class="feature-body">Sì, scaricare l'app e sfogliare i mercati è sempre gratuito. Paghi solo i prodotti che ordini.</div>
+          </div>
+          <div class="feature-card fadein-2">
+            <div class="feature-title" style="font-size: 17px;">Come mi registro come venditore?</div>
+            <div class="feature-body">Clicca su "Registra il tuo banco", inserisci i dati del mercato e del tuo banco. Il team verifica entro 48 ore.</div>
+          </div>
+          <div class="feature-card fadein-3">
+            <div class="feature-title" style="font-size: 17px;">Quali mercati sono disponibili?</div>
+            <div class="feature-body">Siamo attivi in 18 città italiane con oltre 340 mercati. Espandiamo ogni settimana — proponi il tuo!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand">Local<span>Pulse</span></div>
+          <div class="footer-tagline">Mercati di quartiere, digitalizzati con cura</div>
+        </div>
+        <div class="footer-links">
+          <a onclick="showPage('home')">Home</a>
+          <a onclick="showPage('esplora')">Esplora</a>
+          <a onclick="showPage('login')">Accedi</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + id);
+    if (target) { target.classList.add('active'); window.scrollTo(0, 0); }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function doLogin() {
+    showPage('account');
+    showToast('Accesso effettuato 🌿');
+  }
+
+  function toggleFilter(el) {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function selectType(type) {
+    const buyer = document.getElementById('type-buyer');
+    const seller = document.getElementById('type-seller');
+    if (type === 'buyer') {
+      buyer.style.background = 'rgba(45,106,79,0.12)';
+      buyer.style.borderColor = 'rgba(45,106,79,0.35)';
+      buyer.style.color = 'var(--accent-green)';
+      seller.style.background = 'rgba(255,255,255,0.3)';
+      seller.style.borderColor = 'rgba(255,255,255,0.5)';
+      seller.style.color = 'var(--text-secondary)';
+    } else {
+      seller.style.background = 'rgba(224,123,57,0.12)';
+      seller.style.borderColor = 'rgba(224,123,57,0.35)';
+      seller.style.color = 'var(--accent-warm)';
+      buyer.style.background = 'rgba(255,255,255,0.3)';
+      buyer.style.borderColor = 'rgba(255,255,255,0.5)';
+      buyer.style.color = 'var(--text-secondary)';
+    }
+  }
+
+  // animate waste bar on account page load
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
