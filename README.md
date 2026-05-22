@@ -1,83 +1,146 @@
-# 🌿 Local Pulse
+# LocalPulse 🌿
 
-> **Mercati rionali italiani, digitalizzati con cura.**
-> Zero sprechi. Filiera trasparente. Comunità locale.
+> **Digitalizzare la tradizione per abbattere lo spreco alimentare.**  
+> Progetto di **Angelica Goffredo**
+
+![HTML](https://img.shields.io/badge/HTML5-single--file-e07b39?style=flat-square&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS3-Liquid%20Glass-2d6a4f?style=flat-square&logo=css3&logoColor=white)
+![JS](https://img.shields.io/badge/JavaScript-Vanilla%20ES6-f4c896?style=flat-square&logo=javascript&logoColor=black)
+![License](https://img.shields.io/badge/Licenza-MIT-b7e4c7?style=flat-square)
 
 ---
 
 ## Indice
 
 - [Il progetto](#il-progetto)
-- [Obiettivi](#obiettivi)
-- [Funzionalità](#funzionalità)
+- [Contesto e dati](#contesto-e-dati)
+- [Innovazione tecnologica](#innovazione-tecnologica)
+- [Posizionamento competitivo](#posizionamento-competitivo)
+- [Business plan](#business-plan)
+- [Funzionalità della webapp](#funzionalità-della-webapp)
 - [Tecnologie](#tecnologie)
 - [Struttura del progetto](#struttura-del-progetto)
 - [Come iniziare](#come-iniziare)
 - [Pagine della webapp](#pagine-della-webapp)
-- [Design System](#design-system)
+- [Design system](#design-system)
 - [Roadmap](#roadmap)
 - [Impatto atteso](#impatto-atteso)
-- [Autore](#autore)
+- [Autrice](#autrice)
 
 ---
 
 ## Il progetto
 
-**Local Pulse** nasce dalla volontà di supportare i **mercati rionali italiani** digitalizzandone i processi per renderli competitivi nel contesto attuale, combattendo al contempo lo spreco alimentare.
+**LocalPulse** è un ecosistema digitale "Phygital" che trasforma i mercati rionali italiani in piattaforme connesse, senza snaturarne l'identità.
 
-L'obiettivo è dimostrare come la tecnologia possa essere uno strumento concreto per valorizzare la tradizione locale, riducendo l'impatto ambientale e creando un nuovo modello di business sostenibile.
+L'idea nasce da un'osservazione concreta: i mercati di quartiere sono un patrimonio culturale e gastronomico italiano, ma soffrono un gap tecnologico crescente che favorisce la Grande Distribuzione Organizzata a scapito della qualità e della prossimità locale. LocalPulse colma questo divario con strumenti digitali accessibili a tutti — venditori inclusi, anche senza competenze tecniche.
 
-I mercati di quartiere sono un patrimonio culturale italiano: offrono prodotti freschi, km zero, e un legame diretto tra produttore e consumatore. Eppure rischiano di scomparire per mancanza di strumenti digitali adeguati. Local Pulse colma questo gap.
-
----
-
-## Obiettivi
-
-| Obiettivo | Descrizione |
-|-----------|-------------|
-| 🌱 **Anti-spreco** | Ridurre il cibo invenduto a fine giornata attraverso notifiche e offerte last-minute |
-| 🗺️ **Visibilità** | Portare i mercati online con profili, orari e disponibilità in tempo reale |
-| 🧑‍🌾 **Sostenere i venditori** | Offrire dashboard analitiche semplici anche a chi non ha competenze tech |
-| 🤝 **Comunità** | Connettere acquirenti locali con produttori del territorio |
-| 📊 **Impatto misurabile** | Tracciare kg salvati, CO₂ evitata, acquisti locali per ogni utente |
+La **mission** è creare un nuovo modello di business sostenibile che riduca lo spreco alimentare, aumenti i margini dei venditori e rilanci le micro-economie di quartiere.
 
 ---
 
-## Funzionalità
+## Contesto e dati
+
+I tre problemi strutturali che LocalPulse affronta:
+
+| Problema | Dato |
+|----------|------|
+| 🗑️ **Spreco alimentare** | Il **15%** dei prodotti freschi nei mercati rionali non viene venduto e finisce al macero |
+| 📱 **Cambiamento generazionale** | Il **70%** degli under-40 preferisce l'acquisto via app per comodità e velocità |
+| 🏘️ **Crisi della prossimità** | Necessità urgente di rilanciare le micro-economie di quartiere in modo sostenibile |
+
+---
+
+## Innovazione tecnologica
+
+LocalPulse si distingue per tre pilastri tecnologici integrati:
+
+### 🧠 AI Dynamic Pricing
+Un algoritmo cloud regola i prezzi in tempo reale in base all'orario di chiusura del mercato, incentivando l'acquisto dei prodotti prima che vadano sprecati. Il prezzo scende progressivamente nelle ultime ore, trasformando l'invenduto in opportunità.
+
+### ☁️ Vendor Cloud Portal
+I venditori caricano l'inventario tramite **messaggi vocali o foto**, senza dover digitare nulla. Il sistema interpreta e aggiorna automaticamente la disponibilità sul portale. Pensato per chi non ha familiarità con la tecnologia.
+
+### 📍 Geo-Push Marketing
+Notifiche push basate su **geofencing**: i clienti nelle vicinanze del mercato ricevono avvisi di offerte lampo "last minute" negli ultimi minuti prima della chiusura. Massima efficacia, zero spreco.
+
+---
+
+## Posizionamento competitivo
+
+Integrazione con la filiera corta e gestione tempo reale dell'invenduto (scala 0–100):
+
+| Piattaforma | Score | Caratteristica |
+|-------------|-------|----------------|
+| **LocalPulse** (noi) | **95%** | Piena digitalizzazione banchi — filiera corta integrata |
+| Too Good To Go | 60% | Solo "Magic Box" generiche senza profilo produttore |
+| Glovo / Deliveroo | 45% | Solo logistica di consegna, nessun legame col territorio |
+| Esselunga a Casa | 25% | Modello GDO centralizzato, contrario alla prossimità |
+
+> LocalPulse è l'unico sistema che non vende solo "avanzi", ma l'**intera qualità del mercato fresco**.
+
+---
+
+## Business plan
+
+### Investimento iniziale (Seed)
+
+| Voce | Importo |
+|------|---------|
+| Sviluppo MVP (AI + Cloud) | € 25.000 |
+| Kit Digitalizzazione Banchi | € 10.000 |
+| Marketing locale & Onboarding | € 10.000 |
+| **Totale Seed Investment** | **€ 45.000** |
+
+### Flussi di ricavo
+
+- **Commissione** — 8% su ogni vendita gestita tramite app
+- **Modello Premium** — abbonamento mensile per i venditori che vogliono dati di vendita avanzati e insight predittivi
+- **Partnership istituzionali** — accordi con i Comuni per la riduzione dei costi di smaltimento rifiuti alimentari
+
+### Obiettivo
+
+> **Break-even point entro 15 mesi** dal lancio operativo.
+
+---
+
+## Funzionalità della webapp
 
 ### Per gli acquirenti
-- 🔍 **Esplora mercati** — ricerca per prodotto, quartiere, categoria
-- 🔔 **Notifiche anti-spreco** — avvisi quando i prodotti di fine giornata vanno in offerta
-- 📦 **Pre-ordini** — prenota la tua cassetta settimanale e scegli il giorno di ritiro
-- 🌱 **Tracker impatto** — monitora kg salvati dallo spreco e CO₂ evitata
-- ❤️ **Preferiti** — salva i tuoi banchi e mercati di fiducia
+- 🔍 **Esplora mercati** — ricerca per prodotto, quartiere, categoria con filtri interattivi
+- 🎠 **Carousel parallasse** — vetrina visiva dei mercati più vicini con foto reali
+- 🔔 **Notifiche anti-spreco** — avvisi geo-push per offerte last-minute
+- 📦 **Pre-ordini** — prenota la cassetta settimanale e scegli il giorno di ritiro
+- 🌱 **Tracker impatto** — monitora kg salvati dallo spreco e CO₂ evitata personalmente
+- ❤️ **Preferiti** — salva banchi e mercati di fiducia
 
 ### Per i venditori
-- 🧑‍🌾 **Profilo banco** — storia, metodi di coltivazione, certificazioni visibili a tutti
-- 📊 **Dashboard vendite** — analisi semplici su ordini, prodotti più venduti, fasce orarie
-- 📦 **Gestione scorte** — aggiorna disponibilità in tempo reale, segnala prodotti in esaurimento
-- 📣 **Promozioni** — crea offerte last-minute con un tap
-- 📅 **Calendario presenze** — comunica orari e eventuali assenze al mercato
+- 🧑‍🌾 **Profilo banco** — storia, metodi, certificazioni visibili alla community
+- 📊 **Dashboard vendite** — analisi su ordini, prodotti più venduti, fasce orarie
+- 📦 **Gestione scorte** — aggiornamento disponibilità via voce o foto (Vendor Cloud Portal)
+- 📣 **Promozioni lampo** — crea offerte anti-spreco last-minute con un tap
+- 📅 **Calendario presenze** — comunica orari e assenze al mercato
 
 ---
 
 ## Tecnologie
 
-Questa versione è un **prototipo frontend** a singolo file HTML, senza dipendenze esterne da installare.
+Questa versione è un **prototipo frontend a singolo file HTML**, senza dipendenze da installare.
 
 ```
-HTML5 + CSS3 + JavaScript Vanilla
+HTML5 + CSS3 + JavaScript Vanilla ES6
 ```
 
 | Tecnologia | Utilizzo |
 |------------|----------|
-| `backdrop-filter` CSS | Effetto Liquid Glass su card e navbar |
-| CSS Custom Properties | Sistema di design token coerente |
-| CSS Animations | Blob animati in background, transizioni UI |
-| Google Fonts | Cormorant Garamond (display) + DM Sans (corpo) |
-| JavaScript ES6 | Navigazione SPA client-side, toast, interazioni |
+| `backdrop-filter` CSS | Effetto Liquid Glass su card, navbar e drawer mobile |
+| CSS Custom Properties | Sistema di design token con variabili globali |
+| CSS Animations + `@keyframes` | Blob animati, fade-up, pulse del logo, barre progress |
+| JavaScript ES6 (Vanilla) | Router SPA, carousel parallasse, toast, hamburger menu |
+| Google Fonts API | Cormorant Garamond (display) + DM Sans (corpo) |
+| Unsplash (CDN) | Immagini reali dei mercati nel carousel |
 
-**Nessun framework, nessun bundle, nessuna dipendenza.** Apri il file e funziona.
+**Nessun framework. Nessun bundle. Nessuna dipendenza npm.** Apri il file e funziona.
 
 ---
 
@@ -86,22 +149,22 @@ HTML5 + CSS3 + JavaScript Vanilla
 ```
 local-pulse/
 │
-├── README.md                 # Questo file
+├── index.html                  # ← Webapp completa, single-file
 │
-├── docs/
-    ├──  index.html           # Prototipo Webapp (single-file)
-
+├── README.md                   # Questo file
 ```
+
+> **Nota:** Il file `local-pulse.html` è autosufficiente. La cartella `assets/` contiene la versione scomposta in componenti separati, utile per evolvere il progetto verso un framework o un build system.
 
 ### Architettura SPA
 
-La webapp è strutturata come **Single Page Application** client-side. Ogni "pagina" è un `<div>` con id univoco; la funzione `showPage(id)` gestisce la navigazione mostrando/nascondendo le sezioni.
+Ogni "pagina" è un `<div id="p-{nome}">` con classe `.page`. Il router JavaScript gestisce la navigazione attivando/disattivando le sezioni senza ricaricare la pagina.
 
 ```javascript
-function showPage(id) {
+function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  window.scrollTo(0, 0);
+  document.getElementById('p-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 ```
 
@@ -111,36 +174,34 @@ function showPage(id) {
 
 ### Prerequisiti
 
-Nessuno. Solo un browser moderno (Chrome 76+, Firefox 70+, Safari 14+, Edge 79+).
+Nessuno. Basta un browser moderno (Chrome 76+, Firefox 70+, Safari 14+, Edge 79+).
 
-### Avvio
+### Avvio immediato
 
 ```bash
 # Clona il repository
-git clone https://github.com/tuousername/local-pulse.git
-
-# Entra nella directory
+git clone https://github.com/angelicagoffredo/local-pulse.git
 cd local-pulse
 
-# Apri nel browser (macOS)
+# macOS
 open local-pulse.html
 
-# Apri nel browser (Linux)
+# Linux
 xdg-open local-pulse.html
 
-# Apri nel browser (Windows)
+# Windows
 start local-pulse.html
 ```
 
-Oppure semplicemente **trascina `local-pulse.html` nel browser**.
+Oppure **trascina `local-pulse.html` direttamente nel browser**.
 
-### Sviluppo locale con live reload
+### Sviluppo con live reload
 
 ```bash
-# Con Node.js installato
+# Node.js
 npx serve .
 
-# Con Python installato
+# Python
 python -m http.server 8080
 ```
 
@@ -148,31 +209,32 @@ python -m http.server 8080
 
 ## Pagine della webapp
 
-| Pagina | Route (id) | Descrizione |
-|--------|-----------|-------------|
-| 🏠 Home | `home` | Hero, statistiche, features, CTA venditori |
-| 🗺️ Esplora | `esplora` | Ricerca mercati, filtri per categoria, schede prodotto |
-| 🔐 Login | `login` | Accesso email o Google |
-| 📝 Registrazione | `register` | Selezione ruolo (acquirente / venditore) |
-| 👤 Account | `account` | Profilo, ordini recenti, tracker impatto ambientale |
-| 📬 Contatti | `contatti` | Info team, form di contatto, FAQ |
+| Pagina | ID SPA | Contenuto principale |
+|--------|--------|----------------------|
+| 🏠 **Home** | `p-home` | Hero, statistiche chiave, 3 pilastri tech, grafico competitivo, business plan seed, CTA venditori |
+| 🗺️ **Esplora** | `p-esplora` | Carousel parallasse 5 mercati, ricerca, filtri categoria, 6 schede mercato |
+| 🔐 **Login** | `p-login` | Accesso email + Google OAuth |
+| 📝 **Registrazione** | `p-register` | Selezione ruolo acquirente/venditore, form completo |
+| 👤 **Account** | `p-account` | Profilo, ordini recenti, tracker impatto ambientale con progress bar |
+| 📬 **Contatti** | `p-contatti` | Info team, form di contatto, sezione FAQ |
 
 ---
 
-## Design System
+## Design system
 
 ### Filosofia: Liquid Glass
 
-Il design si ispira all'estetica **Liquid Glass** — superfici traslucide con profondità, ispirate alle interfacce modern di Apple e al design material di nuova generazione.
+Il design si ispira all'estetica **Liquid Glass** — superfici traslucide con profondità e riflessi, che restituiscono leggerezza senza perdere struttura. Ogni elemento sembra poggiare su vetro smerigliato davanti ai blob di colore animati in background.
 
 ```css
 /* Formula base dell'effetto glass */
 .glass {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.20);
   backdrop-filter: blur(18px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.10),
-              inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08),
+              inset 0 1px 0 rgba(255, 255, 255, 0.60);
 }
 ```
 
@@ -180,98 +242,111 @@ Il design si ispira all'estetica **Liquid Glass** — superfici traslucide con p
 
 | Variabile | Hex | Utilizzo |
 |-----------|-----|----------|
-| `--accent-green` | `#2d6a4f` | Primario, CTA, accenti |
-| `--accent-warm` | `#e07b39` | Secondario, highlights |
-| `--accent-light` | `#b7e4c7` | Sfondi leggeri |
-| `--bg-page` | `#f2ede4` | Sfondo generale |
-| `--text-primary` | `#1a1a18` | Testo principale |
-| `--text-secondary` | `#4a4a42` | Testo secondario |
-| `--text-muted` | `#888876` | Testo terziario, placeholder |
+| `--g` | `#2d6a4f` | Verde primario — CTA, accenti, brand |
+| `--g-dk` | `#1f4f38` | Verde scuro — hover stati |
+| `--w` | `#e07b39` | Arancio caldo — secondario, highlights, tag warm |
+| `--bg` | `#f2ede4` | Avorio — sfondo generale |
+| `--txt` | `#1a1a18` | Quasi-nero — testo principale |
+| `--txt2` | `#4a4a42` | Grigio caldo — testo secondario |
+| `--muted` | `#888876` | Grigio-verde — placeholder, note, metadati |
 
 ### Tipografia
 
-| Font | Peso | Utilizzo |
+| Font | Pesi | Utilizzo |
 |------|------|----------|
-| `Cormorant Garamond` | 300, 400, 600 | Titoli, display, numeri grandi |
-| `DM Sans` | 300, 400, 500 | Corpo, UI, etichette |
+| `Cormorant Garamond` | 300, 400, 600 + italic | Titoli, hero, numeri statistiche, display |
+| `DM Sans` | 300, 400, 500 | Corpo, UI, label, bottoni, navigazione |
 
-### Componenti principali
+### Componenti chiave
 
-- **`.glass`** — card standard con effetto traslucido
-- **`.glass-dark`** — variante scura per contrasto
-- **`.btn-primary`** — CTA verde principale
-- **`.btn-ghost`** — azione secondaria trasparente
-- **`.filter-chip`** — filtro tag selezionabile
-- **`.market-card`** — scheda mercato con hover elevazione
-- **`.auth-card`** — contenitore form autenticazione
+| Classe | Descrizione |
+|--------|-------------|
+| `.glass` | Surface traslucida base |
+| `.gc` | Glass card con hover elevazione |
+| `.btn-p` | Bottone primario verde |
+| `.btn-gh` | Bottone ghost trasparente |
+| `.btn-bl` | Bottone full-width per form |
+| `.chip` | Filtro/tag selezionabile |
+| `.feat-c` | Feature card con icona |
+| `.mkt-c` | Scheda mercato con thumbnail |
+| `.auth-c` | Contenitore form di autenticazione |
+| `.comp-fill` | Barra animata grafico competitivo |
 
 ---
 
 ## Roadmap
 
-### v1.0 — Prototipo (attuale)
-- [x] Interfaccia HTML/CSS/JS single-file
-- [x] 6 pagine con navigazione SPA
-- [x] Design Liquid Glass completo
-- [x] Componenti UI: card mercati, form, account
+### v1.0 — Prototipo UI (attuale ✅)
+- [x] Single-file HTML con CSS iniettato
+- [x] 6 pagine con router SPA vanilla
+- [x] Design Liquid Glass completo e responsive
+- [x] Carousel parallasse con 5 mercati reali
+- [x] Hamburger menu per mobile
+- [x] Grafico competitivo animato (AI Dynamic Pricing, TGTG, Glovo, Esselunga)
+- [x] Business plan integrato con barre proporzionali
+- [x] Tracker impatto ambientale con progress bar
 
-### v1.1 — Backend integration
+### v1.1 — Backend
 - [ ] API REST (Node.js / FastAPI)
 - [ ] Database mercati e prodotti (PostgreSQL)
-- [ ] Autenticazione JWT + OAuth (Google)
-- [ ] Gestione sessioni utente
+- [ ] Autenticazione JWT + OAuth Google
+- [ ] Upload inventario via voce/foto (Vendor Cloud Portal)
 
 ### v1.2 — Features core
 - [ ] Geolocalizzazione e mappa interattiva (Leaflet.js)
-- [ ] Sistema notifiche push (anti-spreco)
-- [ ] Pre-ordini e carrello
-- [ ] Dashboard venditori con grafici
+- [ ] Sistema notifiche push geofencing (anti-spreco)
+- [ ] Pre-ordini, carrello, pagamenti (Stripe)
+- [ ] Dashboard venditori con grafici reali
 
 ### v2.0 — App mobile
-- [ ] Progressive Web App (PWA)
+- [ ] Progressive Web App (PWA) con service worker
 - [ ] Notifiche push native
-- [ ] Modalità offline
-- [ ] App iOS/Android (React Native o Flutter)
+- [ ] Modalità offline per la consultazione dei mercati
+- [ ] App nativa iOS/Android (React Native o Flutter)
 
-### v2.1 — Sostenibilità avanzata
-- [ ] Calcolo automatico impronta carbonica
-- [ ] Certificazioni biologico/km zero verificate
-- [ ] Report impatto mensile per comune
-- [ ] Integrazione con programmi comunale anti-spreco
+### v2.1 — AI & Sostenibilità
+- [ ] AI Dynamic Pricing in produzione
+- [ ] Calcolo automatico impronta carbonica per ordine
+- [ ] Certificazioni biologico/km zero verificate on-chain
+- [ ] Report impatto mensile aggregato per Comune
+- [ ] Partnership istituzionali con programmi anti-spreco comunali
 
 ---
 
 ## Impatto atteso
 
-Local Pulse si propone di generare impatto misurabile su tre livelli:
-
 ### 🌍 Ambientale
-- Riduzione stimata del **35–40% dello spreco alimentare** nei mercati aderenti
-- Diminuzione delle emissioni legate al trasporto grazie al km zero digitale
-- Consapevolezza del consumatore attraverso il tracker impatto personale
+- Riduzione stimata del **15→ <5%** di prodotti freschi sprecati nei mercati aderenti
+- Diminuzione emissioni legate alla logistica grazie al modello km zero
+- Tracker personale che rende tangibile l'impatto delle scelte d'acquisto
 
 ### 💼 Economico
-- Aumento del fatturato dei venditori grazie alla visibilità online
-- Riduzione delle perdite da invenduto tramite le offerte last-minute
-- Nuovo modello di business: abbonamenti cassette settimanali
+- Aumento del fatturato dei venditori grazie alla visibilità digitale e ai pre-ordini
+- Riduzione delle perdite da invenduto tramite AI Dynamic Pricing e offerte last-minute
+- Commissione dell'**8% sulle vendite** come modello sostenibile per la piattaforma
+- Risparmio sui costi di smaltimento rifiuti per i Comuni (potenziale partnership)
 
 ### 🤝 Sociale
-- Rafforzamento del tessuto commerciale di quartiere
-- Accesso facilitato a prodotti freschi per famiglie a reddito variabile (offerte anti-spreco)
-- Creazione di comunità locali attorno al concetto di consumo consapevole
+- Rilancio del tessuto commerciale e culturale di quartiere
+- Accesso facilitato a prodotti freschi di qualità, anche per famiglie a budget ridotto
+- Riduzione del gap tecnologico per i venditori tradizionali over-50
+- Creazione di comunità locali intorno al consumo consapevole e alla filiera corta
 
 ---
 
-## Autore
+## Autrice
 
-Progetto ideato e sviluppato nell'ambito di un percorso di ricerca sul tema della **digitalizzazione sostenibile del commercio locale tradizionale**.
+**Angelica Goffredo**
 
-**Tema:** *Local Pulse — Supportare i mercati rionali italiani attraverso la tecnologia*
+Progetto sviluppato sul tema: *LocalPulse — Digitalizzare la tradizione per abbattere lo spreco alimentare.*
+
+Obiettivo: dimostrare come la tecnologia possa essere uno strumento concreto per valorizzare la tradizione locale, ridurre l'impatto ambientale e creare un nuovo modello di business sostenibile per i mercati rionali italiani.
 
 ---
 
 <div align="center">
 
-**Local Pulse** — *Mercati di quartiere, digitalizzati con cura* 🌿
+**LocalPulse** — *Digitalizzare la tradizione per abbattere lo spreco alimentare* 🌿  
+*Progetto di Angelica Goffredo*
 
 </div>
